@@ -2,7 +2,7 @@ trigger:
 - main  # Or 'master' if that's your default branch
 
 variables:
-- group: acr-secrets  # Contains ACR_USERNAME and ACR_PASSWORD
+#- group: acr-secrets  # Contains ACR_USERNAME and ACR_PASSWORD
 - name: imageName
   value: 'nareshit.azurecr.io/myapp'
 - name: tag
