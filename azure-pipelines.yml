@@ -4,7 +4,7 @@ trigger:
 variables:
 #- group: acr-secrets  # Contains ACR_USERNAME and ACR_PASSWORD
 - name: imageName
-  value: 'nareshit.azurecr.io/myapp'
+  value: 'nareshitcr.azurecr.io/myapp'
 - name: tag
   value: 'latest'
 - name: acrServiceConnection
