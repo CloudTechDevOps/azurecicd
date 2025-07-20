@@ -2,19 +2,19 @@ trigger:
 - main  # Or 'master' if that's your default branch
 
 variables:
-#- group: acr-secrets  # Contains ACR_USERNAME and ACR_PASSWORD
+- group: acr-secrets  # Contains ACR_USERNAME and ACR_PASSWORD
 - name: imageName
-  value: 'nareshitcr.azurecr.io/myapp'
+  value: 'nareshit.azurecr.io/myapp'
 - name: tag
   value: 'latest'
 - name: acrServiceConnection
-  value: 'test-dockerregistry'  # Name of ACR service connection in DevOps
+  value: 'test-docker'  # Name of ACR service connection in DevOps
 - name: sshConnection
   value: 'test-ssh'             # Name of SSH service connection
 
 pool:
-  name: 'azureagent'  # Self-hosted agent pool
-  #vmImage: 'ubuntu-latest'
+  #name: 'azureagent'  # Self-hosted agent pool
+  vmImage: 'ubuntu-latest'
 
 steps:
 # Step 1: Docker Build and Push
