@@ -2,15 +2,15 @@ trigger:
 - main  # Or 'master' if that's your default branch
 
 variables:
-- group: acr-secrets  # Contains ACR_USERNAME and ACR_PASSWORD
+- group: acr-secrets-veera  # Contains ACR_USERNAME and ACR_PASSWORD
 - name: imageName
-  value: 'nareshit.azurecr.io/myapp'
+  value: 'multicloudveera.azurecr.io/myapp'
 - name: tag
   value: 'latest'
 - name: acrServiceConnection
-  value: 'test-docker'  # Name of ACR service connection in DevOps
+  value: 'acrconnect'  # Name of ACR service connection in DevOps
 - name: sshConnection
-  value: 'test-ssh'             # Name of SSH service connection
+  value: 'vmconnect'             # Name of SSH service connection
 
 pool:
   #name: 'azureagent'  # Self-hosted agent pool
@@ -37,18 +37,25 @@ steps:
     commands: |
       set +e  # Allow non-zero exit codes so warnings don't fail the task
 
-      echo "$(ACR_PASSWORD)" | docker login nareshit.azurecr.io -u "$(ACR_USERNAME)" --password-stdin 2>/dev/null
+      echo "$(ACR_PASSWORD)" | docker login multicloudveera.azurecr.io -u "$(ACR_USERNAME)" --password-stdin 2>/dev/null
       echo "Logged into ACR"
 
       echo "Pulling image..."
-      docker pull nareshit.azurecr.io/myapp:latest
+      docker pull multicloudveera.azurecr.io/myapp:latest
 
       echo "Stopping old container..."
       docker stop myapp 2>/dev/null || true
       docker rm myapp 2>/dev/null || true
 
       echo "Running container..."
-      docker run -d -p 80:80 --name myapp nareshit.azurecr.io/myapp:latest
+      docker run -d -p 80:80 --name myapp multicloudveera.azurecr.io/myapp:latest
 
       echo "Deployment complete."
+
+
+
+
+
+
+
 
