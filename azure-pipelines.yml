@@ -2,19 +2,21 @@ trigger:
 - main  # Or 'master' if that's your default branch
 
 variables:
-- group: acr-secrets-veera  # Contains ACR_USERNAME and ACR_PASSWORD
-- name: imageName
-  value: 'multicloudveera.azurecr.io/myapp'
+- group: variablecall  # Contains ACR_USERNAME and ACR_PASSWORD
 - name: tag
   value: 'latest'
+- name: app-name
+  value: 'cloud-app'
+- name: acrrepo
+  value: 'narni.azurecr.io'
 - name: acrServiceConnection
-  value: 'acrconnect'  # Name of ACR service connection in DevOps
+  value: 'veeranarni'  # Name of ACR service connection in DevOps
 - name: sshConnection
-  value: 'vmconnect'             # Name of SSH service connection
+  value: 'avmconnect'             # Name of SSH service connection
 
 pool:
-  #name: 'azureagent'  # Self-hosted agent pool
-  vmImage: 'ubuntu-latest'
+  name: 'vardhan'  # Self-hosted agent pool
+  #vmImage: 'ubuntu-latest'
 
 steps:
 # Step 1: Docker Build and Push
@@ -22,7 +24,7 @@ steps:
   displayName: 'Build and Push Docker Image to ACR'
   inputs:
     containerRegistry: '$(acrServiceConnection)'
-    repository: 'myapp'
+    repository: $(app-name)
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
     tags: |
@@ -37,18 +39,18 @@ steps:
     commands: |
       set +e  # Allow non-zero exit codes so warnings don't fail the task
 
-      echo "$(ACR_PASSWORD)" | docker login multicloudveera.azurecr.io -u "$(ACR_USERNAME)" --password-stdin 2>/dev/null
+      echo "$(ACR_PASSWORD)" | docker login $(acrrepo) -u "$(ACR_USERNAME)" --password-stdin 2>/dev/null
       echo "Logged into ACR"
 
       echo "Pulling image..."
-      docker pull multicloudveera.azurecr.io/myapp:latest
+      docker pull $(acrrepo)/$(app-name):latest
 
       echo "Stopping old container..."
-      docker stop myapp 2>/dev/null || true
-      docker rm myapp 2>/dev/null || true
+      docker stop $(app-name) 2>/dev/null || true
+      docker rm $(app-name) 2>/dev/null || true
 
       echo "Running container..."
-      docker run -d -p 80:80 --name myapp multicloudveera.azurecr.io/myapp:latest
+      docker run -d -p 80:80 --name $(app-name) $(acrrepo)/$(app-name):latest
 
       echo "Deployment complete."
 
