@@ -38,7 +38,7 @@ jobs:
     # 🐳 Build and push image (FIXED Dockerfile path)
     - name: Build and Push Docker Image
       run: |
-        docker build -t $REGISTRY/$APP_NAME:$TAG -f ./Dockerfile .
+        docker build -t $REGISTRY/$APP_NAME:$TAG -f ../Dockerfile .
         docker push $REGISTRY/$APP_NAME:$TAG
 
     # 🚀 Deploy to VM via SSH
