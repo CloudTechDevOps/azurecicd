@@ -39,7 +39,8 @@ jobs:
       with:
         host: ${{ secrets.VM_HOST }}
         username: ${{ secrets.VM_USER }}
-        password: ${{ secrets.SSH_PRIVATE_KEY }}
+        #password: ${{ secrets.SSH_PRIVATE_KEY }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           set +e
 
