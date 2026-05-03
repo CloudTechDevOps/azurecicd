@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  REGISTRY: narni.azurecr.io
+  REGISTRY: narnii.azurecr.io
   APP_NAME: cloud-app
   TAG: ${{ github.run_number }}
 
